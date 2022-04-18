@@ -1,4 +1,4 @@
-# telegramBot_TimeToGo
+# TelegramBot_TimeToGo
 Приветствую!
 
 Данный бот мой first project на Python.
