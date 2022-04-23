@@ -1,3 +1,4 @@
+import History
 import Output
 import DataInDB
 import token_bot
@@ -18,21 +19,35 @@ def keyboard_start(message):
     History = types.KeyboardButton(text="История поездок")
     startKBoard.add(Who, OutOfTurn, History)
     bot.send_message(message.chat.id, "Пора ехать на работу!", reply_markup=startKBoard)
-    Autochange.scheduleTime()
+
+    # Autochange.scheduleTime() # сделать так что бы только я мог запускать эту функцию
     Autochange.job()
 
 @bot.message_handler(func=lambda messages: messages.text=='История поездок')
 def keyboard_history(message):
-#     HistoryKBoard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-#     OneWeek = types.KeyboardButton(text="Одна неделя")
-#     TwoWeek = types.KeyboardButton(text="Две недели")
-#     Month = types.KeyboardButton(text="Месяц")
-#     BackMenu = types.KeyboardButton(text="Назад в главное меню")
-#     HistoryKBoard.add(OneWeek, TwoWeek, Month, BackMenu)
-    bot.send_message(message.chat.id, "Пока не реализовано")
-    # bot.send_message(message.chat.id, "Выбери за какое время выдать историю", reply_markup=HistoryKBoard)
+    HistoryKBoard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    OneWeek = types.KeyboardButton(text="Три дня")
+    TwoWeek = types.KeyboardButton(text="Одна неделя")
+    BackMenu = types.KeyboardButton(text="Назад в главное меню")
+    HistoryKBoard.add(OneWeek, TwoWeek,  BackMenu)
+    bot.send_message(message.chat.id, "Выберите за какое время выдать историю", reply_markup=HistoryKBoard)
 
     Autochange.job()
+
+@bot.message_handler(func=lambda messages: messages.text=='Три дня')
+def OneWeek_history(message):
+    for i in range(3):
+        bot.send_message(message.chat.id, History.week(3)[i])
+
+
+@bot.message_handler(func=lambda messages: messages.text == 'Одна неделя')
+def TwoWeek_history(message):
+    for i in range(7):
+        try:
+            bot.send_message(message.chat.id, History.week(7)[i])
+        except(IndexError):
+            print('Нет данных')
+
 
 @bot.message_handler(func=lambda messages: messages.text=='Кто едет?')
 def whoTuday(message):
@@ -60,8 +75,8 @@ def answer_callback(callback):
         comfortable = True
         out_of_turn = True
         start_keyboard = types.InlineKeyboardMarkup()
-        easy = types.InlineKeyboardButton(text='На машине Валеры', callback_data='На машине Валеры')
-        notEasy = types.InlineKeyboardButton(text='На машине Саши', callback_data='На машине Саши')
+        easy = types.InlineKeyboardButton(text='На Валере', callback_data='На машине Валеры')
+        notEasy = types.InlineKeyboardButton(text='На Саше', callback_data='На машине Саши')
         start_keyboard.add(easy, notEasy)
         bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
                               text='На чьей машине?', reply_markup=start_keyboard)

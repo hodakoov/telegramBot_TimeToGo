@@ -67,6 +67,18 @@ def search_db(name_column, date): # вывод данных из таблицы
 # for i in range(len(a)):
 #     print(a[i])
 
+def search_db_for_history(date):
+
+    cursor.execute(f'SELECT user_name, date, day_of_the_week, out_of_turn from users WHERE date = "{date}"')
+    result = cursor.fetchall()
+
+    # for row in cursor.execute('SELECT user_name, date, day_of_the_week from users ORDER BY date LIMIT 7'):
+    #     print(row)
+
+    connect.commit()
+    return result
+
+
 
 # для изменения данных, в случае когда кто то решает ехать сам
 def update_db(name_column, result_name_column, result_date): # обновление данных в таблице
