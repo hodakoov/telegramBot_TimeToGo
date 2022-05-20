@@ -60,7 +60,7 @@ def search_db(name_column, date): # вывод данных из таблицы
     # connect.close()
     return users_result[0][0]
 
-
+# print(search_db('user_name', '2022-05-10'))
 
 # a = search_db('2022-04-16')
 # print(a)
@@ -69,13 +69,13 @@ def search_db(name_column, date): # вывод данных из таблицы
 
 
 # для изменения данных, в случае когда кто то решает ехать сам
-def update_db(name_column, result_name_column, where_name_column, result_where_name_column): # обновление данных в таблице
+def update_db(name_column, result_name_column, result_date): # обновление данных в таблице
 
-    cursor.execute(f"UPDATE users SET {name_column} = ? WHERE {where_name_column} = ?",
-                   (result_name_column, result_where_name_column))
+    cursor.execute(f"UPDATE users SET {name_column} = ? WHERE date = ?",
+                   (result_name_column, result_date))
 
     connect.commit()
-    connect.close()
+    # connect.close()
 #update_db('user_name', 'Valery', 'date', '1')
 
 
